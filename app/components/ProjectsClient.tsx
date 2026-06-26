@@ -1,0 +1,166 @@
+'use client'
+
+import { useState } from 'react'
+import { ExternalLink, ArrowLeft } from 'lucide-react'
+import { SiGithub } from 'react-icons/si'
+import Link from 'next/link'
+import Image from 'next/image'
+
+type Project = {
+  id: string
+  title: string
+  description: string
+  tags: string[]
+  category: string
+  github: string
+  live: string
+  image: string | null
+}
+
+type Props = {
+  projects: Project[]
+  categories: string[]
+}
+
+export default function ProjectsClient({ projects, categories }: Props) {
+  const [active, setActive] = useState('All')
+
+  const filtered = active === 'All'
+    ? projects
+    : projects.filter((p) => p.category === active)
+
+  return (
+    <div className="py-24 md:py-32">
+      <div className="max-w-6xl mx-auto px-8 md:px-12 lg:px-16">
+
+        {/* Back link */}
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-text-muted hover:text-accent text-sm transition-colors mb-12 group"
+        >
+          <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+          Back to home
+        </Link>
+
+        {/* Header */}
+        <div className="mb-16">
+          <p className="text-accent text-xs font-semibold tracking-[0.3em] uppercase mb-4">
+            All work
+          </p>
+          <h1 className="text-5xl md:text-6xl font-black leading-none tracking-tight">
+            ALL<br />
+            <span className="text-outline">PROJECTS</span>
+          </h1>
+        </div>
+
+        {/* Filter tabs */}
+        <div className="flex flex-wrap gap-3 mb-12">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActive(category)}
+              className={`px-5 py-2 rounded-full text-sm font-medium transition-colors border ${
+                active === category
+                  ? 'bg-accent border-accent text-white'
+                  : 'bg-surface border-border text-text-secondary hover:border-accent hover:text-accent'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        {/* Project count */}
+        <p className="text-text-muted text-sm mb-8">
+          {filtered.length} {filtered.length === 1 ? 'project' : 'projects'}
+          {active !== 'All' && ` in ${active}`}
+        </p>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filtered.map((project) => (
+            <div
+              key={project.id}
+              className="bg-surface border border-border rounded-xl overflow-hidden hover:border-accent transition-colors group flex flex-col"
+            >
+              {/* Image */}
+              <div className="w-full h-44 bg-surface-2 border-b border-border overflow-hidden">
+                {project.image ? (
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    width={800}
+                    height={400}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-text-muted text-sm">
+                    No image
+                  </div>
+                )}
+              </div>
+
+              <div className="p-6 flex flex-col flex-1">
+
+                {/* Category badge */}
+                <span className="text-accent text-xs font-semibold tracking-widest uppercase mb-3">
+                  {project.category}
+                </span>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="bg-surface-2 text-text-muted text-xs px-3 py-1 rounded-full border border-border"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Title */}
+                <h2 className="text-text-primary font-bold text-lg mb-2 group-hover:text-accent transition-colors">
+                  {project.title}
+                </h2>
+
+                {/* Description */}
+                <p className="text-text-secondary text-sm leading-relaxed flex-1">
+                  {project.description}
+                </p>
+
+                {/* Links */}
+                <div className="flex items-center gap-4 mt-6 pt-4 border-t border-border">
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 text-text-muted hover:text-text-primary transition-colors text-xs font-medium"
+                    >
+                      <SiGithub size={14} />
+                      Source code
+                    </a>
+                  )}
+                  {project.live && (
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 text-text-muted hover:text-accent transition-colors text-xs font-medium"
+                    >
+                      <ExternalLink size={14} />
+                      Live site
+                    </a>
+                  )}
+                </div>
+
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  )
+}
