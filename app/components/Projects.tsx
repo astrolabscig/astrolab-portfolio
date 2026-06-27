@@ -56,79 +56,153 @@ export default async function Projects() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project) => (
-              <div
-                key={project._id}
-                className="bg-surface border border-border rounded-xl overflow-hidden hover:border-accent transition-colors group flex flex-col"
-              >
-                {/* Image */}
-                <div className="w-full h-48 bg-surface-2 border-b border-border overflow-hidden">
-                  {project.image ? (
-                    <Image
-                      src={urlFor(project.image).width(800).height(400).url()}
-                      alt={project.title}
-                      width={800}
-                      height={400}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-text-muted text-sm">
-                      No image
+              <div key={project._id}>
+                {project.category === 'Design' ? (
+
+                  /* Design card — full image overlay */
+                  <div className="relative h-80 overflow-hidden border border-border hover:border-accent rounded-xl group transition-colors cursor-pointer">
+
+                    {project.image ? (
+                      <Image
+                        src={urlFor(project.image).width(800).height(600).url()}
+                        alt={project.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-surface-2 flex items-center justify-center text-text-muted text-sm">
+                        No image
+                      </div>
+                    )}
+
+                    {/* Gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+
+                    {/* Content */}
+                    <div className="absolute bottom-0 left-0 right-0 z-10 p-6">
+
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {project.tags?.map((tag) => (
+                          <span
+                            key={tag}
+                            className="bg-white/10 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full border border-white/20"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <h3 className="text-white font-bold text-lg mb-1 group-hover:text-accent transition-colors">
+                        {project.title}
+                      </h3>
+
+                      <p className="text-white/70 text-sm leading-relaxed max-h-0 overflow-hidden group-hover:max-h-20 transition-all duration-500">
+                        {project.description}
+                      </p>
+
+                      <div className="flex items-center gap-4 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        {project.live && (
+                          <a
+                            href={project.live}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 text-white/70 hover:text-accent transition-colors text-xs font-medium"
+                          >
+                            <ExternalLink size={14} />
+                            View design
+                          </a>
+                        )}
+                        {project.github && (
+                          <a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 text-white/70 hover:text-white transition-colors text-xs font-medium"
+                          >
+                            <SiGithub size={14} />
+                            Source
+                          </a>
+                        )}
+                      </div>
+
                     </div>
-                  )}
-                </div>
+                  </div>
 
-                {/* Card content */}
-                <div className="p-6 flex flex-col flex-1">
+                ) : (
 
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags?.map((tag) => (
-                      <span
-                        key={tag}
-                        className="bg-surface-2 text-text-muted text-xs px-3 py-1 rounded-full border border-border"
-                      >
-                        {tag}
+                  /* Dev / Systems card — standard card with footer */
+                  <div className="bg-surface border border-border rounded-xl overflow-hidden hover:border-accent transition-colors group flex flex-col">
+
+                    <div className="w-full h-48 bg-surface-2 border-b border-border overflow-hidden">
+                      {project.image ? (
+                        <Image
+                          src={urlFor(project.image).width(800).height(400).url()}
+                          alt={project.title}
+                          width={800}
+                          height={400}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-text-muted text-sm">
+                          No image
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="p-6 flex flex-col flex-1">
+
+                      <span className="text-accent text-xs font-semibold tracking-widest uppercase mb-3">
+                        {project.category}
                       </span>
-                    ))}
+
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {project.tags?.map((tag) => (
+                          <span
+                            key={tag}
+                            className="bg-surface-2 text-text-muted text-xs px-3 py-1 rounded-full border border-border"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <h3 className="text-text-primary font-bold text-lg mb-2 group-hover:text-accent transition-colors">
+                        {project.title}
+                      </h3>
+
+                      <p className="text-text-secondary text-sm leading-relaxed flex-1">
+                        {project.description}
+                      </p>
+
+                      <div className="flex items-center gap-4 mt-6 pt-4 border-t border-border">
+                        {project.github && (
+                          <a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 text-text-muted hover:text-text-primary transition-colors text-xs font-medium"
+                          >
+                            <SiGithub size={14} />
+                            Source code
+                          </a>
+                        )}
+                        {project.live && (
+                          <a
+                            href={project.live}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 text-text-muted hover:text-accent transition-colors text-xs font-medium"
+                          >
+                            <ExternalLink size={14} />
+                            Live site
+                          </a>
+                        )}
+                      </div>
+
+                    </div>
                   </div>
 
-                  {/* Title */}
-                  <h3 className="text-text-primary font-bold text-lg mb-2 group-hover:text-accent transition-colors">
-                    {project.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-text-secondary text-sm leading-relaxed flex-1">
-                    {project.description}
-                  </p>
-
-                  {/* Links */}
-                  <div className="flex items-center gap-4 mt-6 pt-4 border-t border-border">
-                    {project.github && (
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-text-muted hover:text-text-primary transition-colors text-xs font-medium"
-                      >
-                        <SiGithub size={14} />
-                        Source code
-                      </a>
-                    )}
-                    {project.live && (
-                      <a
-                        href={project.live}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-text-muted hover:text-accent transition-colors text-xs font-medium"
-                      >
-                        <ExternalLink size={14} />
-                        Live site
-                      </a>
-                    )}
-                  </div>
-
-                </div>
+                )}
               </div>
             ))}
           </div>
