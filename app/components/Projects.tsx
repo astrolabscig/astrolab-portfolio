@@ -70,17 +70,16 @@ export default async function Projects() {
               <div key={project._id}>
                 {project.category === 'Design' ? (
 
-                  /* Design card — full image, natural height */
+                  /* Design card — full natural dimensions, no cropping */
                   <div className="relative overflow-hidden border border-border hover:border-accent rounded-xl group transition-colors cursor-pointer">
 
                     {project.image ? (
                       <Image
-                        src={urlFor(project.image).width(800).url()}
+                        src={urlFor(project.image).width(1200).url()}
                         alt={project.title}
                         width={0}
                         height={0}
                         sizes="100vw"
-                        className="w-full h-auto group-hover:scale-105 transition-transform duration-500"
                         style={{ width: '100%', height: 'auto' }}
                       />
                     ) : (
@@ -89,9 +88,12 @@ export default async function Projects() {
                       </div>
                     )}
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                    {/* Overlay — reveals on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                    <div className="absolute bottom-0 left-0 right-0 z-10 p-6">
+                    {/* Content — slides up on hover */}
+                    <div className="absolute bottom-0 left-0 right-0 z-10 p-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+
                       <div className="flex flex-wrap gap-2 mb-3">
                         {project.tags?.map((tag) => (
                           <span
@@ -103,15 +105,15 @@ export default async function Projects() {
                         ))}
                       </div>
 
-                      <h3 className="text-white font-bold text-lg mb-1 group-hover:text-accent transition-colors">
+                      <h3 className="text-white font-bold text-lg mb-1">
                         {project.title}
                       </h3>
 
-                      <p className="text-white/70 text-sm leading-relaxed max-h-0 overflow-hidden group-hover:max-h-20 transition-all duration-500">
+                      <p className="text-white/70 text-sm leading-relaxed mb-3">
                         {project.description}
                       </p>
 
-                      <div className="flex items-center gap-4 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="flex items-center gap-4">
                         {project.live && (
                           <a
                             href={project.live}
@@ -135,6 +137,7 @@ export default async function Projects() {
                           </a>
                         )}
                       </div>
+
                     </div>
                   </div>
 
