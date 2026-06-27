@@ -1,5 +1,6 @@
 'use client'
 
+import astro3 from "../astro3.png";
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Download, ArrowRight } from 'lucide-react'
@@ -76,11 +77,13 @@ export default function Hero() {
 
               {/* Photo */}
               <div className="w-full h-56 rounded-xl bg-surface-2 mb-5 overflow-hidden border border-border flex items-center justify-center text-text-muted text-sm">
+
+
                 <Image
-                  src={"../astro3.png"}
-                  alt={"My image"}
+                  src={astro3}
+                  alt="My image"
                   width={800}
-                  height={400}
+                  height={600}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>

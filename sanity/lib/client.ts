@@ -6,6 +6,7 @@ export const client = createClient({
   dataset,
   apiVersion,
   useCdn: false,
+  stega: false,
 })
 
 export async function sanityFetch<T>({
@@ -15,5 +16,7 @@ export async function sanityFetch<T>({
   query: string
   params?: Record<string, unknown>
 }): Promise<T> {
-  return client.fetch<T>(query, params)
+  return client.fetch<T>(query, params, {
+    cache: 'no-store',
+  })
 }
