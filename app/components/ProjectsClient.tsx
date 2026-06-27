@@ -5,6 +5,7 @@ import { ExternalLink, ArrowLeft } from 'lucide-react'
 import { SiGithub } from 'react-icons/si'
 import Link from 'next/link'
 import Image from 'next/image'
+import Masonry from 'react-masonry-css'
 
 type Project = {
   id: string
@@ -20,6 +21,12 @@ type Project = {
 type Props = {
   projects: Project[]
   categories: string[]
+}
+
+const breakpointColumns = {
+  default: 3,
+  1024: 2,
+  640: 1,
 }
 
 export default function ProjectsClient({ projects, categories }: Props) {
@@ -76,89 +83,160 @@ export default function ProjectsClient({ projects, categories }: Props) {
           {active !== 'All' && ` in ${active}`}
         </p>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Masonry grid */}
+        <Masonry
+          breakpointCols={breakpointColumns}
+          className="flex gap-6"
+          columnClassName="flex flex-col gap-6"
+        >
           {filtered.map((project) => (
-            <div
-              key={project.id}
-              className="bg-surface border border-border rounded-xl overflow-hidden hover:border-accent transition-colors group flex flex-col"
-            >
-              {/* Image */}
-              <div className="w-full h-44 bg-surface-2 border-b border-border overflow-hidden">
-                {project.image ? (
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    width={800}
-                    height={400}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-text-muted text-sm">
-                    No image
+            <div key={project.id}>
+              {project.category === 'Design' ? (
+
+                /* Design card — full image, natural height */
+                <div className="relative overflow-hidden border border-border hover:border-accent rounded-xl group transition-colors cursor-pointer">
+
+                  {project.image ? (
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      width={800}
+                      height={600}
+                      className="w-full h-auto group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="h-64 bg-surface-2 flex items-center justify-center text-text-muted text-sm">
+                      No image
+                    </div>
+                  )}
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+
+                  <div className="absolute bottom-0 left-0 right-0 z-10 p-6">
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {project.tags?.map((tag) => (
+                        <span
+                          key={tag}
+                          className="bg-white/10 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full border border-white/20"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <h3 className="text-white font-bold text-lg mb-1 group-hover:text-accent transition-colors">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-white/70 text-sm leading-relaxed max-h-0 overflow-hidden group-hover:max-h-20 transition-all duration-500">
+                      {project.description}
+                    </p>
+
+                    <div className="flex items-center gap-4 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {project.live && (
+                        <a
+                          href={project.live}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 text-white/70 hover:text-accent transition-colors text-xs font-medium"
+                        >
+                          <ExternalLink size={14} />
+                          View design
+                        </a>
+                      )}
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 text-white/70 hover:text-white transition-colors text-xs font-medium"
+                        >
+                          <SiGithub size={14} />
+                          Source
+                        </a>
+                      )}
+                    </div>
                   </div>
-                )}
-              </div>
+                </div>
 
-              <div className="p-6 flex flex-col flex-1">
+              ) : (
 
-                {/* Category badge */}
-                <span className="text-accent text-xs font-semibold tracking-widest uppercase mb-3">
-                  {project.category}
-                </span>
+                /* Dev / Systems card — standard card with footer */
+                <div className="bg-surface border border-border rounded-xl overflow-hidden hover:border-accent transition-colors group flex flex-col">
 
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="bg-surface-2 text-text-muted text-xs px-3 py-1 rounded-full border border-border"
-                    >
-                      {tag}
+                  <div className="w-full h-48 bg-surface-2 border-b border-border overflow-hidden">
+                    {project.image ? (
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        width={800}
+                        height={400}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-text-muted text-sm">
+                        No image
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-6 flex flex-col flex-1">
+
+                    <span className="text-accent text-xs font-semibold tracking-widest uppercase mb-3">
+                      {project.category}
                     </span>
-                  ))}
+
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.tags?.map((tag) => (
+                        <span
+                          key={tag}
+                          className="bg-surface-2 text-text-muted text-xs px-3 py-1 rounded-full border border-border"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <h3 className="text-text-primary font-bold text-lg mb-2 group-hover:text-accent transition-colors">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-text-secondary text-sm leading-relaxed flex-1">
+                      {project.description}
+                    </p>
+
+                    <div className="flex items-center gap-4 mt-6 pt-4 border-t border-border">
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 text-text-muted hover:text-text-primary transition-colors text-xs font-medium"
+                        >
+                          <SiGithub size={14} />
+                          Source code
+                        </a>
+                      )}
+                      {project.live && (
+                        <a
+                          href={project.live}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 text-text-muted hover:text-accent transition-colors text-xs font-medium"
+                        >
+                          <ExternalLink size={14} />
+                          Live site
+                        </a>
+                      )}
+                    </div>
+
+                  </div>
                 </div>
 
-                {/* Title */}
-                <h2 className="text-text-primary font-bold text-lg mb-2 group-hover:text-accent transition-colors">
-                  {project.title}
-                </h2>
-
-                {/* Description */}
-                <p className="text-text-secondary text-sm leading-relaxed flex-1">
-                  {project.description}
-                </p>
-
-                {/* Links */}
-                <div className="flex items-center gap-4 mt-6 pt-4 border-t border-border">
-                  {project.github && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-text-muted hover:text-text-primary transition-colors text-xs font-medium"
-                    >
-                      <SiGithub size={14} />
-                      Source code
-                    </a>
-                  )}
-                  {project.live && (
-                    <a
-                      href={project.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-text-muted hover:text-accent transition-colors text-xs font-medium"
-                    >
-                      <ExternalLink size={14} />
-                      Live site
-                    </a>
-                  )}
-                </div>
-
-              </div>
+              )}
             </div>
           ))}
-        </div>
+        </Masonry>
 
       </div>
     </div>

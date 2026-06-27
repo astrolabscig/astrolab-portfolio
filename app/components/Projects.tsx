@@ -2,6 +2,7 @@ import { ArrowRight, ExternalLink } from 'lucide-react'
 import { SiGithub } from 'react-icons/si'
 import Link from 'next/link'
 import Image from 'next/image'
+import Masonry from 'react-masonry-css'
 import { sanityFetch } from '@/sanity/lib/client'
 import { FEATURED_PROJECTS_QUERY } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
@@ -19,6 +20,12 @@ type SanityProject = {
   }
   github?: string
   live?: string
+}
+
+const breakpointColumns = {
+  default: 3,
+  1024: 2,
+  640: 1,
 }
 
 export default async function Projects() {
@@ -54,33 +61,35 @@ export default async function Projects() {
         {projects.length === 0 ? (
           <p className="text-text-muted text-sm">No featured projects yet.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Masonry
+            breakpointCols={breakpointColumns}
+            className="flex gap-6"
+            columnClassName="flex flex-col gap-6"
+          >
             {projects.map((project) => (
               <div key={project._id}>
                 {project.category === 'Design' ? (
 
-                  /* Design card — full image overlay */
-                  <div className="relative h-80 overflow-hidden border border-border hover:border-accent rounded-xl group transition-colors cursor-pointer">
+                  /* Design card — full image, natural height */
+                  <div className="relative overflow-hidden border border-border hover:border-accent rounded-xl group transition-colors cursor-pointer">
 
                     {project.image ? (
                       <Image
                         src={urlFor(project.image).width(800).height(600).url()}
                         alt={project.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        width={800}
+                        height={600}
+                        className="w-full h-auto group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
-                      <div className="absolute inset-0 bg-surface-2 flex items-center justify-center text-text-muted text-sm">
+                      <div className="h-64 bg-surface-2 flex items-center justify-center text-text-muted text-sm">
                         No image
                       </div>
                     )}
 
-                    {/* Gradient overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
-                    {/* Content */}
                     <div className="absolute bottom-0 left-0 right-0 z-10 p-6">
-
                       <div className="flex flex-wrap gap-2 mb-3">
                         {project.tags?.map((tag) => (
                           <span
@@ -124,7 +133,6 @@ export default async function Projects() {
                           </a>
                         )}
                       </div>
-
                     </div>
                   </div>
 
@@ -205,7 +213,7 @@ export default async function Projects() {
                 )}
               </div>
             ))}
-          </div>
+          </Masonry>
         )}
 
       </div>
