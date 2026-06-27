@@ -75,11 +75,13 @@ export default async function Projects() {
 
                     {project.image ? (
                       <Image
-                        src={urlFor(project.image).width(800).height(600).url()}
+                        src={urlFor(project.image).width(800).url()}
                         alt={project.title}
-                        width={800}
-                        height={600}
+                        width={0}
+                        height={0}
+                        sizes="100vw"
                         className="w-full h-auto group-hover:scale-105 transition-transform duration-500"
+                        style={{ width: '100%', height: 'auto' }}
                       />
                     ) : (
                       <div className="h-64 bg-surface-2 flex items-center justify-center text-text-muted text-sm">
