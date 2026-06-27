@@ -2,7 +2,7 @@ import { ArrowRight, ExternalLink } from 'lucide-react'
 import { SiGithub } from 'react-icons/si'
 import Link from 'next/link'
 import Image from 'next/image'
-import Masonry from 'react-masonry-css'
+import MasonryGrid from './MasonryGrid'
 import { sanityFetch } from '@/sanity/lib/client'
 import { FEATURED_PROJECTS_QUERY } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
@@ -61,11 +61,7 @@ export default async function Projects() {
         {projects.length === 0 ? (
           <p className="text-text-muted text-sm">No featured projects yet.</p>
         ) : (
-          <Masonry
-            breakpointCols={breakpointColumns}
-            className="flex gap-6"
-            columnClassName="flex flex-col gap-6"
-          >
+          <MasonryGrid>
             {projects.map((project) => (
               <div key={project._id}>
                 {project.category === 'Design' ? (
@@ -218,7 +214,7 @@ export default async function Projects() {
                 )}
               </div>
             ))}
-          </Masonry>
+          </MasonryGrid>
         )}
 
       </div>

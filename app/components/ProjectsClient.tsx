@@ -5,7 +5,7 @@ import { ExternalLink, ArrowLeft } from 'lucide-react'
 import { SiGithub } from 'react-icons/si'
 import Link from 'next/link'
 import Image from 'next/image'
-import Masonry from 'react-masonry-css'
+import MasonryGrid from './MasonryGrid'
 
 type Project = {
   id: string
@@ -83,12 +83,8 @@ export default function ProjectsClient({ projects, categories }: Props) {
           {active !== 'All' && ` in ${active}`}
         </p>
 
-        {/* Masonry grid */}
-        <Masonry
-          breakpointCols={breakpointColumns}
-          className="flex gap-6"
-          columnClassName="flex flex-col gap-6"
-        >
+        {/* MasonryGrid grid */}
+        <MasonryGrid>
           {filtered.map((project) => (
             <div key={project.id}>
               {project.category === 'Design' ? (
@@ -241,7 +237,7 @@ export default function ProjectsClient({ projects, categories }: Props) {
               )}
             </div>
           ))}
-        </Masonry>
+        </MasonryGrid>
 
       </div>
     </div>
