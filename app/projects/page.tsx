@@ -32,7 +32,11 @@ export default async function ProjectsPage() {
     category: p.category,
     github: p.github ?? '',
     live: p.live ?? '',
-    image: p.image ? urlFor(p.image).width(800).height(400).url() : null,
+    image: p.image
+      ? p.category === 'Design'
+        ? urlFor(p.image).width(1200).url()
+        : urlFor(p.image).width(800).height(400).url()
+      : null,
   }))
 
   console.log(projects)
