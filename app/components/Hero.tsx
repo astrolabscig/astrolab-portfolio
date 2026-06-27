@@ -1,10 +1,12 @@
 'use client'
 
-import astro3 from "../astro3.png";
+import astro3 from "../astro3.png"
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { Download, ArrowRight } from 'lucide-react'
+import { Download, ArrowRight, Mail } from 'lucide-react'
 import Image from 'next/image'
+import { SiGithub } from 'react-icons/si'
+import { FaLinkedin } from 'react-icons/fa'
 
 export default function Hero() {
   return (
@@ -12,8 +14,8 @@ export default function Hero() {
       <div className="max-w-6xl mx-auto px-8 md:px-12 lg:px-16 w-full py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
 
-          {/* Right — Headline + CTAs */}
-          <div className="order-1 lg:order-2">
+          {/* Left — Headline + CTAs */}
+          <div className="order-1 lg:order-1">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -52,68 +54,91 @@ export default function Hero() {
             >
               <Link
                 href="/#projects"
-                className="flex items-center gap-2 bg-accent hover:bg-accent-hover text-white px-6 py-3 rounded-lg font-medium text-sm transition-colors"
+                className="group flex items-center gap-2 bg-accent hover:bg-accent-hover text-white px-8 py-4 rounded-xl font-semibold text-sm transition-all duration-300 shadow-lg shadow-accent/20 hover:shadow-accent/40 hover:scale-[1.02]"
               >
-                View my work <ArrowRight size={16} />
+                View my work
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
               <a
-                href="/cv.pdf"
+                href="/resume.pdf"
                 download
-                className="flex items-center gap-2 border border-border hover:border-accent text-text-secondary hover:text-accent px-6 py-3 rounded-lg font-medium text-sm transition-colors"
+                className="group flex items-center gap-2 border-2 border-border hover:border-accent bg-transparent hover:bg-accent/5 text-text-secondary hover:text-accent px-8 py-4 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-[1.02]"
               >
-                <Download size={16} /> Download CV
+                <Download size={16} />
+                Download CV
               </a>
             </motion.div>
           </div>
 
-                    {/* Left — Profile card */}
+          {/* Right — Profile card */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="flex justify-center lg:justify-start order-2 lg:order-2">
-
-            <div className="bg-surface border border-border rounded-2xl p-6 text-center w-64">
+            className="flex justify-center lg:justify-end order-2 lg:order-2"
+          >
+            <div className="bg-surface border border-border rounded-3xl p-8 text-center w-80 hover:border-accent transition-colors duration-300">
 
               {/* Photo */}
-              <div className="w-full h-56 rounded-xl bg-surface-2 mb-5 overflow-hidden border border-border flex items-center justify-center text-text-muted text-sm">
-
-
+              <div className="w-full h-72 rounded-2xl bg-surface-2 mb-6 overflow-hidden border border-border">
                 <Image
                   src={astro3}
-                  alt="My image"
+                  alt="Joseph Boafo Afful"
                   width={800}
                   height={600}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                 />
               </div>
 
-              <h2 className="text-text-primary font-bold text-base tracking-widest uppercase">
-                Your Name
+              {/* Name */}
+              <h2 className="text-text-primary font-black text-lg tracking-widest uppercase">
+                Joseph Boafo Afful
               </h2>
 
-              <div className="w-6 h-0.5 bg-accent mx-auto my-3" />
+              {/* Accent divider */}
+              <div className="flex items-center justify-center gap-2 my-4">
+                <div className="w-8 h-0.5 bg-border" />
+                <div className="w-2 h-2 rounded-full bg-accent" />
+                <div className="w-8 h-0.5 bg-border" />
+              </div>
 
-              <p className="text-text-secondary text-xs leading-relaxed">
+              {/* Tagline */}
+              <p className="text-text-secondary text-sm leading-relaxed px-2">
                 Full-Stack Developer & Designer building clean digital experiences.
               </p>
 
-              <div className="flex justify-center gap-5 mt-5">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer"
-                  className="text-text-muted hover:text-accent transition-colors text-xs">
+              {/* Socials */}
+              <div className="flex justify-center gap-3 mt-6">
+                <a
+                  href="https://github.com/astrolabscig"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 bg-surface-2 hover:bg-accent hover:text-white text-text-secondary border border-border hover:border-accent px-4 py-2 rounded-lg text-xs font-medium transition-all duration-300"
+                >
+                  <SiGithub size={12} />
                   GitHub
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
-                  className="text-text-muted hover:text-accent transition-colors text-xs">
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 bg-surface-2 hover:bg-accent hover:text-white text-text-secondary border border-border hover:border-accent px-4 py-2 rounded-lg text-xs font-medium transition-all duration-300"
+                >
+                  <FaLinkedin size={12} />
                   LinkedIn
                 </a>
-                <a href="mailto:you@email.com"
-                  className="text-text-muted hover:text-accent transition-colors text-xs">
+                <a
+                  href="mailto:you@email.com"
+                  className="flex items-center gap-1.5 bg-surface-2 hover:bg-accent hover:text-white text-text-secondary border border-border hover:border-accent px-4 py-2 rounded-lg text-xs font-medium transition-all duration-300"
+                >
+                  <Mail size={12} />
                   Email
                 </a>
               </div>
+
             </div>
           </motion.div>
+
         </div>
       </div>
     </section>
