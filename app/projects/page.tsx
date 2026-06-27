@@ -1,4 +1,3 @@
-
 import ProjectsClient from '../components/ProjectsClient'
 import { sanityFetch } from '@/sanity/lib/client'
 import { urlFor } from '@/sanity/lib/image'
@@ -34,12 +33,10 @@ export default async function ProjectsPage() {
     live: p.live ?? '',
     image: p.image
       ? p.category === 'Design'
-        ? urlFor(p.image).width(1200).url()
+        ? urlFor(p.image).url()
         : urlFor(p.image).width(800).height(400).url()
       : null,
   }))
-
-  console.log(projects)
 
   const categories = ['All', 'Web Development', 'Design', 'Systems']
 
